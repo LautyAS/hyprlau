@@ -1,28 +1,14 @@
-sudo su
+#!/bin/bash
 
-pacman -S --needed git base-devel kitty
 
-mkdir hyprlau
 
-cd hyprlau/
+echo -ne "This script asumes that you have alredy partitioned and mounted your disk/partitions, if not please abort and do that first\nDo you want to continue (Y/n): " 
 
-git clone https://aur.archlinux.org/paru.git
-cd paru
-makepkg -si
+read acepto
 
-cd ..
-
-echo "Do you want to apply a basic pacman config? (Y/N)"
-
-read -p "Do you want to apply a basic pacman config? (Y/N)" respuesta
-
-if [[ "$respuesta" == "y" || "$respuesta" == "Y" ]]; then
-	echo "Nice!"
-	cat pacman.conf > /etc/pacman.conf
-	paru --noconfirm -Syu --needed floorp-bin hyprland hyprpaper rofi dolphin waybar fastfetch github-cli libreoffice alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session steam discord prismlauncher blender
-elif [[ "$respuesta" == "n" || "$respuesta" == "N" ]]
-	echo "Ok, let's do the rest of this..."
-	paru --noconfirm -Syu --needed floorp-bin hyprpaper rofi dolphin waybar fastfetch github-cli libreoffice alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session
-else
-	echo "Sorry?"
+if [[ "$acepto" == "y" || "$acepto" == "Y" ]];then
+	echo "Flama maquinola"
+	./archinstall.sh
+elif [[ "$acepto" == "n" || "$acepto" == "N" ]];then
+	echo "Te espero ;D"
 fi
