@@ -1,28 +1,22 @@
-sudo su
+#!/bin/bash
 
 pacman -S --needed git base-devel kitty
 
-mkdir hyprlau
+#git clone https://aur.archlinux.org/paru-bin.git
+#cd paru-bin
+#makepkg -si
+#cd ..
 
-cd hyprlau/
-
-git clone https://aur.archlinux.org/paru.git
-cd paru
-makepkg -si
-
-cd ..
-
-echo "Do you want to apply a basic pacman config? (Y/N)"
 
 read -p "Do you want to apply a basic pacman config? (Y/N)" respuesta
 
 if [[ "$respuesta" == "y" || "$respuesta" == "Y" ]]; then
 	echo "Nice!"
-	cat pacman.conf > /etc/pacman.conf
-	paru --noconfirm -Syu --needed floorp-bin hyprland hyprpaper rofi dolphin waybar fastfetch github-cli libreoffice alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session steam discord prismlauncher blender
-elif [[ "$respuesta" == "n" || "$respuesta" == "N" ]]
+	cat pacman.conf | sudo tee /etc/pacman.conf #> /dev/null
+	paru --noconfirm -Syu --needed base-devel kitty floorp-bin hyprland hyprpaper rofi dolphin waybar fastfetch github-cli libreoffice alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session steam discord prismlauncher blender
+elif [[ "$respuesta" == "n" || "$respuesta" == "N" ]]; then
 	echo "Ok, let's do the rest of this..."
-	paru --noconfirm -Syu --needed floorp-bin hyprpaper rofi dolphin waybar fastfetch github-cli libreoffice alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session
-else
-	echo "Sorry?"
+	paru --noconfirm -Syu --needed base-devel kitty floorp-bin hyprpaper rofi dolphin waybar fastfetch github-cli libreoffice alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session
+#else
+#	echo "What?"
 fi
