@@ -21,16 +21,17 @@ if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
 	if [[ "$respuesta" == "y" || "$respuesta" == "Y" ]]; then
 		echo "Nice!"
 		cat pacman.conf | sudo tee /etc/pacman.conf #> /dev/null
-		paru --noconfirm -Syu --needed base-devel kitty floorp-bin hyprland hyprpaper rofi dolphin waybar fastfetch github-cli alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session steam discord prismlauncher blender ly ttf-nerd-fonts-symbols ttf-firacode-nerd ttf-sourcecodepro-nerd ttf-noto-nerd
+		paru --noconfirm -Syu --needed base-devel kitty floorp-bin hyprland hyprpaper rofi dolphin waybar fastfetch github-cli alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session steam discord prismlauncher blender ly ttf-nerd-fonts-symbols ttf-firacode-nerd ttf-sourcecodepro-nerd ttf-noto-nerd noto-fonts spotify-launcher pavucontrol
 	
 	echo "firacode, noto and source code font were added, select what you like"
 	echo "Recoda q la config de waybar esta en /etc/xdg/waybar/config.jsonc" 
 	elif [[ "$respuesta" == "n" || "$respuesta" == "N" ]]; then
 		echo "Ok, let's do the rest of this..."
-		paru --noconfirm -Syu --needed base-devel kitty floorp-bin hyprpaper rofi dolphin waybar fastfetch github-cli libreoffice alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session ly ttf-nerd-fonts-symbols ttf-firacode-nerd ttf-sourcecodepro-nerd ttf-noto-nerd1
+		paru --noconfirm -Syu --needed base-devel kitty floorp-bin hyprpaper rofi dolphin waybar fastfetch github-cli libreoffice alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session ly ttf-nerd-fonts-symbols ttf-firacode-nerd ttf-sourcecodepro-nerd ttf-noto-nerd1 noto-fonts spotify-launcher pavucontrol
 
 	fi
-
+	
+	cat waybarcfg.jsonc | sudo tee /etc/xdg/waybar/config.jsonc 
 	sudo systemctl enable ly
 
 #else
