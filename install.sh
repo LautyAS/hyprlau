@@ -1,11 +1,11 @@
 #!/bin/bash
 
 
-echo -e "\nA little reminder... If you have any trouble running this script, please, ensoure that you aren't running this as sudo, and that you own your /home directory, you can do that by typing (sudo chown -R "Your User" /home)" && sleep 1
+echo -e "\nA little reminder... If you have any trouble running this script, please, ensoure that you aren't running this as sudo, and that you own your /home directory, you can do that by typing (sudo chown -R "Your User" /home)\n" && sleep 1
 
-read -p "Now that I said that.. Do you want to start? (Y/n): " scriptrun
+read -p "Now that I said that.. Do you want to start? (Y/n): " strun
 
-if [[ "scriptrun" == "y" || "scriptrun" == "Y" ]]; then
+if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
 
 	pacman -Sy --needed git base-devel kitty
 
@@ -14,6 +14,7 @@ if [[ "scriptrun" == "y" || "scriptrun" == "Y" ]]; then
 	echo "Estamos en la carpeta de paru" && sleep 5
 	makepkg -si
 	cd ..
+	rm -rf paru-bin
 
 	read -p "Do you want to apply a basic pacman config? (Y/N)" respuesta
 
