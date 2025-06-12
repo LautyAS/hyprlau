@@ -31,7 +31,8 @@ if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
 
 	fi
 	
-	cat waybarcfg.jsonc | sudo tee /etc/xdg/waybar/config.jsonc 
+	cat ~/hyprlau/hyprland.conf | tee ~/.config/hypr/hyprland.conf
+	cat ~/hyprlau/waybarcfg.jsonc | sudo tee /etc/xdg/waybar/config.jsonc 
 	sudo systemctl enable ly
 
 #else
