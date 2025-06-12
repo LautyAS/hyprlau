@@ -26,8 +26,11 @@ if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
 		paru -Sy --noconfirm --needed base-devel kitty floorp-bin hyprpaper fuzzel dolphin waybar fastfetch github-cli libreoffice alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber ly ttf-nerd-fonts-symbols ttf-noto-nerd ttf-firacode-nerd ttf-sourcedodepro-nerd noto-fonts spotify-launcher pavucontrol
 	fi
 	
+	systemctl --user mask at-spi-dbus-bus.service
 	cat ~/hyprlau/configs/fuzzel.ini | tee ~/.config/fuzzel.ini
 	cat ~/hyprlau/configs/hyprland.conf | tee ~/.config/hypr/hyprland.conf
 	cat ~/hyprlau/configs/waybarcfg.jsonc | sudo tee /etc/xdg/waybar/config.jsonc 
+	cat ~/hyprlau/configs/hyprpaper.conf | tee ~/.config/hypr/hyprpaper.conf
+	cp -r ~/hyprlau/rice /home/rice
 	sudo systemctl enable ly
 fi
