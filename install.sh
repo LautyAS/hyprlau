@@ -19,15 +19,15 @@ if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
 	read -p "Do you want to apply a basic pacman config? (Y/N)" respuesta
 	if [[ "$respuesta" == "y" || "$respuesta" == "Y" ]]; then
 		echo "Nice!"
-		cat ~/hyprlau/pacman.conf | sudo tee /etc/pacman.conf
-		echo -e "\n\n\n\nVamos a instalar los paquetes...\n\n" && sleep 5
-		paru -Sy --noconfirm --needed base-devel kitty floorp-bin hyprland hyprpaper rofi dolphin waybar fastfetch github-cli alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session steam discord prismlauncher blender ly ttf-nerd-fonts-symbols ttf-noto-nerd ttf-sourcecodepro-nerd ttf-firacode-nerd noto-fonts spotify-launcher pavucontrol
+		cat ~/hyprlau/configs/pacman.conf | sudo tee /etc/pacman.conf
+		paru -Sy --noconfirm --needed base-devel kitty floorp-bin hyprland hyprpaper fuzzel dolphin waybar fastfetch github-cli alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber steam discord prismlauncher ly ttf-nerd-fonts-symbols ttf-noto-nerd ttf-sourcecodepro-nerd ttf-firacode-nerd noto-fonts spotify-launcher pavucontrol
 	elif [[ "$respuesta" == "n" || "$respuesta" == "N" ]]; then
 		echo "Ok, let's do the rest of this..."
-		paru -Sy --noconfirm --needed base-devel kitty floorp-bin hyprpaper rofi dolphin waybar fastfetch github-cli libreoffice alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session ly ttf-nerd-fonts-symbols ttf-noto-nerd ttf-firacode-nerd ttf-sourcedodepro-nerd noto-fonts spotify-launcher pavucontrol
+		paru -Sy --noconfirm --needed base-devel kitty floorp-bin hyprpaper fuzzel dolphin waybar fastfetch github-cli libreoffice alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber ly ttf-nerd-fonts-symbols ttf-noto-nerd ttf-firacode-nerd ttf-sourcedodepro-nerd noto-fonts spotify-launcher pavucontrol
 	fi
 	
-	cat ~/hyprlau/hyprland.conf | tee ~/.config/hypr/hyprland.conf
-	cat ~/hyprlau/waybarcfg.jsonc | sudo tee /etc/xdg/waybar/config.jsonc 
+	cat ~/hyprlau/configs/fuzzel.ini | tee ~/.config/fuzzel.ini
+	cat ~/hyprlau/configs/hyprland.conf | tee ~/.config/hypr/hyprland.conf
+	cat ~/hyprlau/configs/waybarcfg.jsonc | sudo tee /etc/xdg/waybar/config.jsonc 
 	sudo systemctl enable ly
 fi
