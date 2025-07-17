@@ -5,7 +5,7 @@
 paquetes_of=(base-devel kitty ly hyprland hyprpaper fuzzel waybar fastfetch github-cli alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber steam discord prismlauncher ly ttf-nerd-fonts-symbols ttf-noto-nerd ttf-firacode-nerd ttf-sourcecodepro-nerd noto-fonts spotify-launcher pavucontrol)
 paquetes_aur=(floorp-bin)
 paquetes_gpu=()
-paquetes=("${paquetes_of[@]}" "${paquetes_aur[@]}" "${paquetes_gpu[@]}")
+#paquetes=("${paquetes_of[@]}" "${paquetes_aur[@]}" "${paquetes_gpu[@]}")
 
 echo -e "\nA little reminder... If you have any trouble running this script, please, ensure that you aren't running this as sudo, and that you own your /home directory, you can do that by typing (sudo chown -R \$(whoami) /home)\n" && sleep 1
 
@@ -66,7 +66,9 @@ if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
 	esac
 
 	#Installation
+	paquetes=("${paquetes_of[@]}" "${paquetes_aur[@]}" "${paquetes_gpu[@]}")
 	paru -Syyu --noconfirm --needed "${paquetes[@]}"
+	paru -Sc --noconfirm
 	
 	#Rice
 	echo "Doing some RICING"
