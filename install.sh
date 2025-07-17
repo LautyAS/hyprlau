@@ -2,7 +2,7 @@
 
 #mis fuentes favoritas son: ttf-firacode-nerd ttf-noto-nerd y ttf-sourcedodepro-nerd
 
-paquetes_of=(base-devel kitty ly hyprland hyprpaper fuzzel waybar fastfetch github-cli alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber steam discord prismlauncher ly ttf-nerd-fonts-symbols ttf-noto-nerd ttf-firacode-nerd ttf-sourcecodepro-nerd noto-fonts spotify-launcher pavucontrol lib32-pipewire)
+paquetes_of=(base-devel kitty ly hyprland hyprpaper fuzzel waybar fastfetch github-cli alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber steam discord prismlauncher ttf-nerd-fonts-symbols ttf-noto-nerd ttf-firacode-nerd ttf-sourcecodepro-nerd noto-fonts spotify-launcher pavucontrol lib32-pipewire)
 paquetes_aur=(floorp-bin)
 paquetes_gpu=(lib32-mesa mesa-utils vulkan-tools)
 #paquetes=("${paquetes_of[@]}" "${paquetes_aur[@]}" "${paquetes_gpu[@]}")
@@ -30,15 +30,17 @@ if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
 	sudo sed -i '/^\[multilib\]/,/^$/s/^\(\s*\)#\s*\(Include = \/etc\/pacman.d\/mirrorlist\)/\1\2/' "$CONFPM"
 	
 	#paru
-	echo "Installing paru to manage aur packages..."
-	git clone https://aur.archlinux.org/paru-bin.git
-	cd paru-bin
-	makepkg -s --noconfirm
-	paru_pkg=$(ls paru-bin-*.pkg.tar.zst | tail -n1)
-	sudo pacman -U --noconfirm "$paru_pkg"
-	cd ..
-	rm -rf paru-bin
-	
+	if ! command -v paru &> /dev/null; then
+    		echo "Paru not found. Installing it to manage aur packages..."
+		git clone https://aur.archlinux.org/paru-bin.git
+		cd paru-bin
+		makepkg -s --noconfirm
+		paru_pkg=$(ls paru-bin-*.pkg.tar.zst | tail -n1)
+		sudo pacman -U --noconfirm "$paru_pkg"
+		cd ..
+		rm -rf paru-bin
+	fi
+
 	#GPU thigies
 	echo -e "\nSelect your GPU vendor:\n"
 	echo "1) AMD"
