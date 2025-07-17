@@ -4,7 +4,8 @@
 
 paquetes_of=(base-devel kitty ly hyprland hyprpaper fuzzel waybar fastfetch github-cli alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber steam discord prismlauncher ly ttf-nerd-fonts-symbols ttf-noto-nerd ttf-firacode-nerd ttf-sourcecodepro-nerd noto-fonts spotify-launcher pavucontrol)
 paquetes_aur=(floorp-bin)
-paquetes=("${paquetes_of[@]}" "${paquetes_aur[@]}")
+paquetes_gpu=()
+paquetes=("${paquetes_of[@]}" "${paquetes_aur[@]}" "${paquetes_gpu[@]}")
 
 echo -e "\nA little reminder... If you have any trouble running this script, please, ensure that you aren't running this as sudo, and that you own your /home directory, you can do that by typing (sudo chown -R \$(whoami) /home)\n" && sleep 1
 
@@ -37,6 +38,32 @@ if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
 	sudo pacman -U --noconfirm "$paru_pkg"
 	cd ..
 	rm -rf paru-bin
+	
+	#GPU thigies
+	echo -e "\nSelect your GPU vendor:\n"
+	echo "1) AMD"
+	echo "2) Intel"
+	echo "3) NVIDIA"
+	echo "4) Skip (I will handle Vulkan manually) (This option generally installs amdvlk as default)"
+	read -p "Choice: " gpu_choice
+
+	case "$gpu_choice" in
+  	1)
+    		echo "→ AMD selected"
+    		paquetes_gpu+=(vulkan-radeon lib32-vulkan-radeon)
+		;;
+  	2)
+    		echo "→ Intel selected"
+    		paquetes_gpu+=(vulkan-intel lib32-vulkan-intel intel-media-driver)
+    		;;
+  	3)
+    		echo "→ NVIDIA selected"
+    		paquetes_gpu+=(nvidia nvidia-utils lib32-nvidia-utils nvidia-settings)
+    		;;
+  	*)
+    		echo "→ Skipping GPU-specific packages"
+    		;;
+	esac
 
 	#Installation
 	paru -Syyu --noconfirm --needed "${paquetes[@]}"
