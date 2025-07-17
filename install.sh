@@ -6,7 +6,7 @@ paquetes_of=(base-devel kitty ly hyprland hyprpaper fuzzel waybar fastfetch gith
 paquetes_aur=(floorp-bin)
 paquetes=("${paquetes_of[@]}" "${paquetes_aur[@]}")
 
-echo -e "\nA little reminder... If you have any trouble running this script, please, ensoure that you aren't running this as sudo, and that you own your /home directory, you can do that by typing (sudo chown -R \$(whoami) /home)\n" && sleep 1
+echo -e "\nA little reminder... If you have any trouble running this script, please, ensure that you aren't running this as sudo, and that you own your /home directory, you can do that by typing (sudo chown -R \$(whoami) /home)\n" && sleep 1
 
 read -p "Now that I said that.. Do you want to start? (y/N): " strun
 
@@ -44,6 +44,7 @@ if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
 	#Rice
 	echo "Doing some RICING"
 	mkdir -p ~/.config/hypr
+	sudo mkdir -p /etc/xdg/waybar
 	cp ~/hyprlau/configs/fuzzel.ini ~/.config/fuzzel.ini
 	cp ~/hyprlau/configs/hyprland.conf ~/.config/hypr/hyprland.conf
 	sudo cp ~/hyprlau/configs/waybarcfg.jsonc /etc/xdg/waybar/config.jsonc 
@@ -59,5 +60,5 @@ if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
 	#enabling ly
 	sudo systemctl enable ly
 
-	echo "Everithing done. Just reboot and enjoy!"
+	echo "Everything done. Just reboot and enjoy!"
 fi
