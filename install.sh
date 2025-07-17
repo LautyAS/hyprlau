@@ -13,8 +13,16 @@ read -p "Now that I said that.. Do you want to start? (y/N): " strun
 
 if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
 	
-	sudo pacman -Sy --needed --noconfirm git base-devel
-	
+	#Base preparation
+	sudo pacman -Sy --needed --noconfirm git base-devel reflector
+	sudo reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+	sudo pacman -Syy
+	sudo pacman -Sy --noconfirm archlinux-keyring
+	sudo pacman-key --init
+	sudo pacman-key --populate archlinux
+	sudo pacman-key --refresh-keys || echo "→ Some keys could not be refreshed (probably by timeout), but we will continue..."
+
+
 	#pacman.conf backup
 	echo "Doing a backup of pacman.conf on pacman.conf.bak"
 	CONFPM="/etc/pacman.conf"
