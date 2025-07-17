@@ -6,46 +6,58 @@ paquetes_of=(base-devel kitty ly hyprland hyprpaper fuzzel waybar fastfetch gith
 paquetes_aur=(floorp-bin)
 paquetes=("${paquetes_of[@]}" "${paquetes_aur[@]}")
 
-echo -e "\nA little reminder... If you have any trouble running this script, please, ensoure that you aren't running this as sudo, and that you own your /home directory, you can do that by typing (sudo chown -R "Your User" /home)\n" && sleep 1
+echo -e "\nA little reminder... If you have any trouble running this script, please, ensoure that you aren't running this as sudo, and that you own your /home directory, you can do that by typing (sudo chown -R \$(whoami) /home)\n" && sleep 1
 
-read -p "Now that I said that.. Do you want to start? (Y/n): " strun
+read -p "Now that I said that.. Do you want to start? (y/N): " strun
 
 if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
 
-	sudo pacman -Syyu --needed --noconfirm git base-devel
+	sudo pacman -Sy --needed --noconfirm git base-devel
 	
+	#pacman.conf backup
 	echo "Doing a backup of pacman.conf on pacman.conf.bak"
-
 	CONFPM="/etc/pacman.conf"
-	sudo cp "$CONFPM" "${CONFPM}.bak"										#Making a backup of the actual pacman.conf
+	sudo cp "$CONFPM" "${CONFPM}.bak"
 	
-	echo "Applying basic pacman tweaks..."
-
-	grep -q "^ILoveCandy" "$CONFPM" || sudo sed -i '/^#Color/i ILoveCandy' "$CONFPM"				#Adding ILoveCandy above Color
-	sudo sed -i 's/^#/Color/Color' "$CONFPM"									#Discomenting Color
-	sudo sed -i 's/^#\?\s*ParallelDownloads *= *.*/ParallelDownloads = 10/' "$CONFPM"				#Changing quantity of parallel downloads
-	sudo sed -i '/^\s*#\[multilib\]/s/^#//' "$CONFPM"								#Discomenting multilib
-	sudo sed -i '/^\[multilib\]/,/^$/s/^\(\s*\)#\s*\(Include = \/etc\/pacman.d\/mirrorlist\)/\1\2/' "$CONFPM"	#Discomenting the mirrorlist for multilib
+	#configuración de pacman
+	echo "Applying basic pacman.conf tweaks..."
+	grep -q "^ILoveCandy" "$CONFPM" || sudo sed -i '/^#Color/i ILoveCandy' "$CONFPM"
+	#sudo sed -i 's/^#/Color/Color' "$CONFPM"
+	sudo sed -i 's/^#Color/Color/' "$CONFPM"
+	sudo sed -i 's/^#\?\s*ParallelDownloads *= *.*/ParallelDownloads = 10/' "$CONFPM"
+	sudo sed -i '/^\s*#\[multilib\]/s/^#//' "$CONFPM"
+	sudo sed -i '/^\[multilib\]/,/^$/s/^\(\s*\)#\s*\(Include = \/etc\/pacman.d\/mirrorlist\)/\1\2/' "$CONFPM"
 	
+	#paru
 	echo "Installing paru to manage aur packages..."
-
 	git clone https://aur.archlinux.org/paru-bin.git
 	cd paru-bin
-	makepkg -si
+	makepkg -s --noconfirm
+	paru_pkg=$(ls paru-bin-*.pkg.tar.zst | tail -n1)
+	sudo pacman -U --noconfirm "$paru_pkg"
 	cd ..
 	rm -rf paru-bin
 
+	#Installation
 	paru -Syyu --noconfirm --needed "${paquetes[@]}"
 	
-	echo "Doing some aestethic tweaking"
-
+	#Rice
+	echo "Doing some RICING"
 	mkdir -p ~/.config/hypr
-	systemctl --user mask at-spi-dbus-bus.service
 	cp ~/hyprlau/configs/fuzzel.ini ~/.config/fuzzel.ini
 	cp ~/hyprlau/configs/hyprland.conf ~/.config/hypr/hyprland.conf
 	sudo cp ~/hyprlau/configs/waybarcfg.jsonc /etc/xdg/waybar/config.jsonc 
 	cp ~/hyprlau/configs/hyprpaper.conf ~/.config/hypr/hyprpaper.conf
 	cp -r ~/hyprlau/rice ~/rice
+	
+	#Optimization
+	read -p "¿Do you want to disable (at-spi-dbus-bus) to save some resources? (It is an accesibility service, most people don't need it) (y/N): " a11y
+	if [[ "$a11y" == "y" || "$a11y" == "Y" ]]; then
+    		systemctl --user mask at-spi-dbus-bus.service
+	fi
+
+	#enabling ly
 	sudo systemctl enable ly
 
+	echo "Everithing done. Just reboot and enjoy!"
 fi
