@@ -2,9 +2,9 @@
 
 #mis fuentes favoritas son: ttf-firacode-nerd ttf-noto-nerd y ttf-sourcedodepro-nerd
 
-paquetes_of=(base-devel kitty ly hyprland hyprpaper fuzzel waybar fastfetch github-cli alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber steam discord prismlauncher ly ttf-nerd-fonts-symbols ttf-noto-nerd ttf-firacode-nerd ttf-sourcecodepro-nerd noto-fonts spotify-launcher pavucontrol)
+paquetes_of=(base-devel kitty ly hyprland hyprpaper fuzzel waybar fastfetch github-cli alsa-lib alsa-utils pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber steam discord prismlauncher ly ttf-nerd-fonts-symbols ttf-noto-nerd ttf-firacode-nerd ttf-sourcecodepro-nerd noto-fonts spotify-launcher pavucontrol lib32-pipewire)
 paquetes_aur=(floorp-bin)
-paquetes_gpu=()
+paquetes_gpu=(lib32-mesa mesa-utils vulkan-tools)
 #paquetes=("${paquetes_of[@]}" "${paquetes_aur[@]}" "${paquetes_gpu[@]}")
 
 echo -e "\nA little reminder... If you have any trouble running this script, please, ensure that you aren't running this as sudo, and that you own your /home directory, you can do that by typing (sudo chown -R \$(whoami) /home)\n" && sleep 1
@@ -12,7 +12,7 @@ echo -e "\nA little reminder... If you have any trouble running this script, ple
 read -p "Now that I said that.. Do you want to start? (y/N): " strun
 
 if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
-
+	
 	sudo pacman -Sy --needed --noconfirm git base-devel
 	
 	#pacman.conf backup
@@ -72,6 +72,7 @@ if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
 	
 	#Rice
 	echo "Doing some RICING"
+	mkdir -p ~/.config
 	mkdir -p ~/.config/hypr
 	sudo mkdir -p /etc/xdg/waybar
 	cp ~/hyprlau/configs/fuzzel.ini ~/.config/fuzzel.ini
@@ -81,6 +82,7 @@ if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
 	cp -r ~/hyprlau/rice ~/rice
 	
 	#Optimization
+	sudo pacman -Rns --noconfirm $(paru -Qtdq)
 	read -p "¿Do you want to disable (at-spi-dbus-bus) to save some resources? (It is an accesibility service, most people don't need it) (y/N): " a11y
 	if [[ "$a11y" == "y" || "$a11y" == "Y" ]]; then
     		systemctl --user mask at-spi-dbus-bus.service
