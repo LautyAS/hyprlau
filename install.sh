@@ -14,14 +14,20 @@ read -p "Now that I said that.. Do you want to start? (y/N): " strun
 if [[ "$strun" == "y" || "$strun" == "Y" ]]; then
 	
 	#Base preparation
-	sudo pacman -Sy --needed --noconfirm git base-devel reflector
+	sudo pacman -Sy --needed --noconfirm git base-devel reflector gnupg
 	sudo reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 	sudo pacman -Syy
 	sudo pacman -Sy --noconfirm archlinux-keyring
 	sudo pacman-key --init
 	sudo pacman-key --populate archlinux
-	sudo pacman-key --refresh-keys || echo "→ Some keys could not be refreshed (probably by timeout), but we will continue..."
+	sudo pacman-key --refresh-keys --keyserver hkps://keyserver.ubuntu.com || echo "→ Some keys could not be refreshed (probably by timeout), but we will continue..."
+	gpg --homedir ~/.gnupg --keyserver hkps://keyserver.ubuntu.com --recv-keys $(pacman-key --list-keys | grep pub | awk '{print $2}') || \
+	echo "Warning!!! Some keys could not be imported"
 
+	read -p "Do you want to test keyring integrity before installing packages? (y/N): " testkey
+		if [[ "$testkey" == "y" || "$testkey" == "Y" ]]; then
+    		sudo pacman -Sw archlinux-keyring && echo "✅ Keyring seems functional!" || echo "❌ There might still be an issue." && sleep 3
+		fi
 
 	#pacman.conf backup
 	echo "Doing a backup of pacman.conf on pacman.conf.bak"
